@@ -53,7 +53,7 @@ namespace ДЗ_с_студентом_СиШарп_
         }
         public void setStreet(string street)
         {
-            this.street = (street.Length >= 3) ? street : "(?)";
+            this.street = (street.Length >= 3) ? street : "(???)";
         }
         public void setHouse(int houseN)
         {
