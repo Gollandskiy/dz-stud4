@@ -100,6 +100,41 @@ namespace ДЗ_с_студентом_СиШарп_
             id += ++ID;
 
         }
+
+        public int IDProper
+        {
+            get { return id; }
+            set { id = value; }
+        }
+        public string familProper
+        {
+            get { return famil; }
+            set { famil = value; }
+        }
+        public string nameProper
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public DateTime birthProper
+        {
+            get { return birth; }
+            set { birth = value; }
+        }
+        public Address addressProper
+        {
+            get { return address; }
+            set { address = value; }
+        }
+        public string phoneProper
+        {
+            get { return phone; }
+            set { phone = value; }
+        }
+
+
+
+
         public int getID()
         {
             return id;
@@ -292,6 +327,27 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             studCopy(students);
         }
+
+        public string titleProper
+        {
+            get { return title; }
+            set { title = value; }
+        }
+        public string specProper
+        {
+            get { return spec; }
+            set { spec = value; }
+        }
+        public int kursProper
+        {
+            get { return kurs; }
+            set { kurs = value; }
+        }
+        public List<Student> studProper
+        {
+            get { return stud; }
+        }
+
 
         public string getTitle()
         {
