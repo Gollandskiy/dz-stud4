@@ -64,14 +64,65 @@ namespace ДЗ_с_студентом_СиШарп_
             return (city + ", " + country + ", st." + street + " " + house);
         }
     }
-    class Student
+
+    public class Person
     {
-        private int id;
-        private string famil;
         private string name;
+        private string famil;
         private DateTime birth;
         private Address address;
         private string phone;
+
+        public Person() : this("Name1", "Famil1")
+        { }
+        public Person(string name, string famil) : this(name, famil, new DateTime(), new Address())
+        {
+
+        }
+        public Person(string name, string famil, DateTime birth, Address address, string phone = "")
+        {
+            Name = name;
+            Famil = famil;
+            Birth = birth;
+            Address = address;
+            Phone = phone;
+        }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public string Famil
+        {
+            get { return famil; }
+            set { famil = value; }
+        }
+        public DateTime Birth
+        {
+            get { return birth; }
+            set { birth = value; }
+        }
+        public Address Address
+        {
+            get { return address; }
+            set { address = value; }
+        }
+        public string Phone
+        {
+            get { return phone; }
+            set { phone = value; }
+        }
+        public void infoPers()
+        {
+            Console.WriteLine("Name: " + name + "\nFamil: " + famil + 
+                "\nBirth: " + birth.Day + "." + birth.Month + "." + birth.Year + 
+                "\nAddress: " + address + "\nPhone: " + phone);
+        }
+    }
+
+    public class Student:Person
+    {
+        private int id;
 
         private List<int> zachet;
         private List<int> dz;
@@ -86,12 +137,8 @@ namespace ДЗ_с_студентом_СиШарп_
         public Student(string name, string famil) : this(name, famil, DateTime.Now, new Address())
         {
         }
-        public Student(string name, string famil, DateTime birth, Address address, string phone = "???")
+        public Student(string name, string famil, DateTime birth, Address address, string phone = "???") : base(name, famil,birth,address,phone)
         {
-            setName(name);
-            setFamil(famil);
-            setBirth(birth);
-            setAddress(address);
 
             zachet = new List<int>();
             dz = new List<int>();
@@ -104,98 +151,16 @@ namespace ДЗ_с_студентом_СиШарп_
         public int IDProper
         {
             get { return id; }
-            set { id = value; }
-        }
-        public string familProper
-        {
-            get { return famil; }
-            set { famil = value; }
-        }
-        public string nameProper
-        {
-            get { return name; }
-            set { name = value; }
         }
         public DateTime birthProper
         {
-            get { return birth; }
-            set { birth = value; }
+            get { return base.Birth; }
+            set { base.Birth = new DateTime(base.Birth.Year, base.Birth.Month, base.Birth.Year); }
         }
-        public Address addressProper
-        {
-            get { return address; }
-            set { address = value; }
-        }
-        public string phoneProper
-        {
-            get { return phone; }
-            set { phone = value; }
-        }
-
-
-
 
         public int getID()
         {
             return id;
-        }
-
-        public string getName()
-        {
-            return name;
-        }
-
-        public string getFamil()
-        {
-            return famil;
-        }
-
-        public DateTime getBirth()
-        {
-            return birth;
-        }
-
-        public Address getAddress()
-        {
-            return address;
-        }
-
-        public string getPhone()
-        {
-            return phone;
-        }
-
-        public void setName(string name)
-        {
-            if (name.Length <= 1)
-            {
-                throw new Exception("Имя должно быть больше 1 символа!");
-            }
-            this.name = name;
-        }
-        public void setFamil(string famil)
-        {
-            if (famil.Length <= 1)
-            {
-                throw new Exception("Фамилия должна быть больше 1 символа!");
-            }
-            this.famil = famil;
-        }
-        public void setBirth(DateTime birth)
-        {
-            this.birth = birth;
-        }
-        public void setAddress(Address address)
-        {
-            this.address = address;
-        }
-        public void setPhone(string phone)
-        {
-            if (phone.Length < 9)
-            {
-                throw new Exception("Номер должен быть больше 9 символов!");
-            }
-            this.phone = phone;
         }
         public void setZachet(int zachet1)
         {
@@ -242,11 +207,6 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             Console.WriteLine("Информация о студенте: ");
             Console.WriteLine("Айди: " + id);
-            Console.WriteLine("Имя: " + name);
-            Console.WriteLine("Фамилия: " + famil);
-            Console.WriteLine("День рождения: " + birth.Day, " ", birth.Month, " ", birth.Year);
-            Console.WriteLine("Адрес: " + address);
-            Console.WriteLine("Телефон: " + phone);
 
             Console.WriteLine("Оценки за зачет: ");
             foreach (int zachet1 in zachet)
@@ -266,12 +226,12 @@ namespace ДЗ_с_студентом_СиШарп_
         }
         public static bool operator ==(Student name,Student name2)
         {
-            return name.name == name2.name;
+            return name.Name == name2.Name;
         }
 
         public static bool operator !=(Student name,Student name2)
         {
-            return !(name.name == name2.name);
+            return !(name.Name == name2.Name);
         }
     }
 
@@ -300,7 +260,7 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             for (int i = 0; i < stud.Count; i++)
             {
-                names[i] = stud[i].getName() + " - " + stud[i].getFamil() + " - " + stud[i].getID();
+                names[i] = stud[i].Name + " - " + stud[i].Famil + " - " + stud[i].getID();
             }
         }
         public void studDel(Student stud1)
@@ -424,11 +384,11 @@ namespace ДЗ_с_студентом_СиШарп_
         }
         public Student studById(int id)
         {
-            foreach (Student stud in stud)
+            foreach (Student stud1 in stud)
             {
-                if (stud.getID() == id)
+                if (stud1.getID() == id)
                 {
-                    return stud;
+                    return stud1;
                 }
             }
             throw new Exception("Студента с айди " + id + " не существует");
@@ -486,6 +446,31 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             return !(title.title == title2.title);
         }
+
+        public Student this[int ID]
+        {
+            get { return studById(ID); }
+        }
+    }
+    public class Aspirant:Student
+    {
+        private string dissert;
+        public Aspirant(string name, string famil, string dissert) : this(name, famil, dissert, new DateTime(), new Address())
+        {
+        }
+        public Aspirant(string name, string famil, string dissert, DateTime birth, Address address, string phone = ""):base(name,famil,birth,address,phone)
+        {
+            Dissert = dissert;
+        }
+        public string Dissert
+        {
+            get { return dissert; }
+            set { dissert = value; }
+        }
+        public void dissertInfo()
+        {
+            Console.WriteLine("Dissertation: " + dissert);
+        }
     }
 
     internal class Program
@@ -498,7 +483,7 @@ namespace ДЗ_с_студентом_СиШарп_
             Student stud2 = new Student("Nikita", "Prigolovkin");
             Student stud3 = new Student("Nikita", "Prigolovkin", new DateTime(2005, 10, 28), new Address(), "12344321");
 
-            Student stud4 = new Student("Name1", "Famil1");
+            Aspirant aspir4 = new Aspirant("AspirantName1", "AspirantFamil1","Cool Dissertation");
 
             stud.Add(stud1);
             stud.Add(stud2);
@@ -545,22 +530,22 @@ namespace ДЗ_с_студентом_СиШарп_
 
             for (int i = 0; i < 3; i++)
             {
-                stud4.setZachet(rand.Next(1, 12));
+                aspir4.setZachet(rand.Next(1, 12));
             }
 
             for (int i = 0; i < 3; i++)
             {
-                stud4.setDZ(rand.Next(1, 12));
+                aspir4.setDZ(rand.Next(1, 12));
             }
 
             for (int i = 0; i < 3; i++)
             {
-                stud4.setEkz(rand.Next(1, 12));
+                aspir4.setEkz(rand.Next(1, 12));
             }
 
             Group group = new Group("G1", "Povar", 2, stud);
             group.sortStud();
-            group.addStud(stud4);
+            group.addStud(aspir4);
             group.sortStud();
             Student izmenaStud = group.studById(1);
             group.sortStud();
@@ -601,7 +586,7 @@ namespace ДЗ_с_студентом_СиШарп_
                 Console.WriteLine(er.Message + "\n");
             }
 
-            if (stud1.getName() == stud2.getName())
+            if (stud1.Name == stud2.Name)
             {
                 Console.WriteLine("Имена студентов одинаковы!");
             }
@@ -617,6 +602,17 @@ namespace ДЗ_с_студентом_СиШарп_
             else
             {
                 Console.WriteLine("Имена групп не одинаковы!");
+            }
+
+
+            Console.WriteLine("\nИндекс студента: ");
+            try
+            {
+                Console.WriteLine(group2[1]);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }
