@@ -636,8 +636,6 @@ namespace ДЗ_с_студентом_СиШарп_
                 new Student("Fedya", "Babaikin"),
                 new Student("Inokentii", "Popygaevich")
             };
-            Student stud23 = new Student();
-            Console.WriteLine(stud23);
             foreach (Student studLoc in studs2)
             {
                 for (int i = 0; i < studs2.Count; i++)
