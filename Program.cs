@@ -120,7 +120,7 @@ namespace ДЗ_с_студентом_СиШарп_
         }
     }
 
-    public class Student:Person
+    public class Student:Person,IComparable
     {
         private int id;
 
@@ -232,6 +232,20 @@ namespace ДЗ_с_студентом_СиШарп_
         public static bool operator !=(Student name,Student name2)
         {
             return !(name.Name == name2.Name);
+        }
+
+        public int CompareTo(object o)
+        {
+            Student s = o as Student;
+            if (sredDZ() < s.sredDZ())
+            {
+                return -1;
+            }
+            if (sredDZ() > s.sredDZ())
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 
@@ -483,7 +497,7 @@ namespace ДЗ_с_студентом_СиШарп_
             Student stud2 = new Student("Nikita", "Prigolovkin");
             Student stud3 = new Student("Nikita", "Prigolovkin", new DateTime(2005, 10, 28), new Address(), "12344321");
 
-            Aspirant aspir4 = new Aspirant("AspirantName1", "AspirantFamil1","Cool Dissertation");
+            Aspirant aspir4 = new Aspirant("AspirantName1", "AspirantFamil1", "Cool Dissertation");
 
             stud.Add(stud1);
             stud.Add(stud2);
@@ -613,6 +627,35 @@ namespace ДЗ_с_студентом_СиШарп_
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+            List<Student> studs2 = new List<Student>
+            {
+                new Student("Nikita", "Prigolovkin"),
+                new Student("Sasha", "Lopatov"),
+                new Student("Vasyan", "Vasyanich"),
+                new Student("Fedya", "Babaikin"),
+                new Student("Inokentii", "Popygaevich")
+            };
+            Student stud23 = new Student();
+            Console.WriteLine(stud23);
+            foreach (Student studLoc in studs2)
+            {
+                for (int i = 0; i < studs2.Count; i++)
+                {
+                    studLoc.setDZ(rand.Next(1, 12));
+                }
+            }
+            foreach (Student studloc in studs2)
+            {
+                Console.WriteLine(studloc);
+                Console.WriteLine("DZ: " + studloc.sredDZ());
+            }
+            Console.WriteLine("\nПосле сортировки: \n");
+            studs2.Sort();
+            foreach (Student studloc in studs2)
+            {
+                Console.WriteLine(studloc);
+                Console.WriteLine("DZ: " + studloc.sredDZ());
             }
         }
     }
