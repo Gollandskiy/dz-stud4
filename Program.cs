@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,9 +7,41 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using ДЗ_с_студентом_СиШарп_;
 
 namespace ДЗ_с_студентом_СиШарп_
 {
+    public class StudentEnumerator : IEnumerator
+    {
+        private List<Student> studs;
+        private int pos;
+
+        object IEnumerator.Current => throw new NotImplementedException();
+
+        public StudentEnumerator(List<Student> stud1)
+        {
+
+            studs = stud1;
+            pos = -1;
+        }
+        public bool MoveNext()
+        {
+            if (pos >= studs.Count - 1)
+            {
+                return false;
+            }
+            pos++;
+            return true;
+        }
+        public void Reset()
+        {
+            pos = -1;
+        }
+        public object Current()
+        {
+            return studs[pos];
+        }
+    }
     public class Address
     {
         private string country;
@@ -249,7 +282,7 @@ namespace ДЗ_с_студентом_СиШарп_
         }
     }
 
-    class Group
+    public class Group : IEnumerable
     {
         private List<Student> stud = new List<Student>();
         private string title;
@@ -363,6 +396,10 @@ namespace ДЗ_с_студентом_СиШарп_
                 throw new ArgumentException("Курс не может быть отрицательным числом или больше 5!");
             }
             this.kurs = kurs;
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return new StudentEnumerator(stud);
         }
 
         public void Info()
@@ -654,6 +691,32 @@ namespace ДЗ_с_студентом_СиШарп_
             {
                 Console.WriteLine(studloc);
                 Console.WriteLine("DZ: " + studloc.sredDZ());
+            }
+
+            List<Student> studs3 = new List<Student>();
+                studs3.Add(new Student("Name1","Famil1"));
+                studs3.Add(new Student("Name2","Famil2"));
+                studs3.Add(new Student("Name3","Famil3"));
+                studs3.Add(new Student("Name4","Famil4"));
+            Group gr = new Group(studs3);
+            foreach (Student studs4 in studs3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    studs4.setDZ(rand.Next(1, 12));
+                }
+                for (int i = 0; i < 3; i++)
+                {
+                    studs4.setDZ(rand.Next(1, 12));
+                }
+                for (int i = 0; i < 3; i++)
+                {
+                    studs4.setDZ(rand.Next(1, 12));
+                }
+            }
+            foreach (Student studs4 in gr)
+            {
+                Console.WriteLine(studs4);
             }
         }
     }
