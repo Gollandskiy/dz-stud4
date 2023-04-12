@@ -16,7 +16,20 @@ namespace ДЗ_с_студентом_СиШарп_
         private List<Student> studs;
         private int pos;
 
-        object IEnumerator.Current => throw new NotImplementedException();
+        public object Current
+        {
+            get
+            {
+                try
+                {
+                    return studs[pos];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+        }
 
         public StudentEnumerator(List<Student> stud1)
         {
@@ -36,10 +49,6 @@ namespace ДЗ_с_студентом_СиШарп_
         public void Reset()
         {
             pos = -1;
-        }
-        public object Current()
-        {
-            return studs[pos];
         }
     }
     public class Address
@@ -157,6 +166,7 @@ namespace ДЗ_с_студентом_СиШарп_
     {
         private int id;
 
+        private List<Student> students = new List<Student>();
         private List<int> zachet;
         private List<int> dz;
         private List<int> ekz;
@@ -257,6 +267,10 @@ namespace ДЗ_с_студентом_СиШарп_
                 Console.WriteLine(ekz1);
             }
         }
+        public int sredAll()
+        {
+            return (sredDZ() + sredZachet() + sredEkz()) / 3;
+        }
         public static bool operator ==(Student name,Student name2)
         {
             return name.Name == name2.Name;
@@ -281,8 +295,46 @@ namespace ДЗ_с_студентом_СиШарп_
             return 0;
         }
     }
+    class Sort
+    {
+        public delegate bool DelComp(object obj1, object obj2);
+        public static void Pomenat(List<Student> studs, int num1, int num2)
+        {
+            Student stud = studs[num1];
+            studs[num1] = studs[num2];
+            studs[num2] = stud;
+        }
+        public static void BubSort(List<Student> stud,DelComp del)
+        {
+            for (int i = 0; i < stud.Count; i++)
+            {
+                for (int j = 0; j < stud.Count-i; j++)
+                {
+                    if (del(stud[j], stud[j]))
+                    {
+                        Pomenat(stud, j, j++);
+                    }
+                }
+            }
+        }
+    }
+    public static class StudComp
+    {
+        public static void Check(object obj1, object obj2)
+        {
+            Student l = obj1 as Student;
+            Student r = obj2 as Student;
+            if (obj1 == null || obj2 == null)
+                throw new ArgumentException("Bad type");
+        }
+        public static bool StudGrad(object obj1, object obj2)
+        {
+            Check(obj1, obj2);
+            return ((Student)obj1).sredAll() > ((Student)obj2).sredAll();
+        }
+    }
 
-    public class Group : IEnumerable
+        public class Group : IEnumerable
     {
         private List<Student> stud = new List<Student>();
         private string title;
@@ -401,6 +453,10 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             return new StudentEnumerator(stud);
         }
+        public List<Student> Studs
+        {
+            get { return stud; }
+        }
 
         public void Info()
         {
@@ -502,6 +558,12 @@ namespace ДЗ_с_студентом_СиШарп_
         {
             get { return studById(ID); }
         }
+
+        static int CompareName(string name1, string name2)
+        {
+            return name1.CompareTo(name2);
+        }
+
     }
     public class Aspirant:Student
     {
@@ -528,196 +590,222 @@ namespace ДЗ_с_студентом_СиШарп_
     {
         static void Main(string[] args)
         {
-            List<Student> stud = new List<Student>();
+            //List<Student> stud = new List<Student>();
+            //Random rand = new Random();
+            //Student stud1 = new Student();
+            //Student stud2 = new Student("Nikita", "Prigolovkin");
+            //Student stud3 = new Student("Nikita", "Prigolovkin", new DateTime(2005, 10, 28), new Address(), "12344321");
+
+            //Aspirant aspir4 = new Aspirant("AspirantName1", "AspirantFamil1", "Cool Dissertation");
+
+            //stud.Add(stud1);
+            //stud.Add(stud2);
+            //stud.Add(stud3);
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud1.setZachet(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud1.setDZ(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud1.setEkz(rand.Next(1, 12));
+            //}
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud2.setZachet(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud2.setDZ(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud2.setEkz(rand.Next(1, 12));
+            //}
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud3.setZachet(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud3.setDZ(rand.Next(1, 12));
+            //}
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    stud3.setEkz(rand.Next(1, 12));
+            //}
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    aspir4.setZachet(rand.Next(1, 12));
+            //}
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    aspir4.setDZ(rand.Next(1, 12));
+            //}
+
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    aspir4.setEkz(rand.Next(1, 12));
+            //}
+
+            //Group group = new Group("G1", "Povar", 2, stud);
+            //group.sortStud();
+            //group.addStud(aspir4);
+            //group.sortStud();
+            //Student izmenaStud = group.studById(1);
+            //group.sortStud();
+            //Console.WriteLine("\n");
+
+
+            //Group group2 = new Group("G2", "Svarshik", 3);
+            //group2.sortStud();
+
+            //group.studIntoGroup(2, group2);
+            //group.sortStud();
+            //group2.sortStud();
+
+            //group.studDelEkz();
+            //group.sortStud();
+
+            //group.badStud();
+            //group.sortStud();
+
+            //Student stud5 = new Student();
+            //try
+            //{
+            //    stud5 = new Student("Name2", "Famil2", new DateTime(2024, 99, 99), new Address(), "0508885556");
+            //}
+            //catch (Exception er)
+            //{
+            //    Console.WriteLine(er.Message + "\n");
+            //}
+
+
+            //Student stud6 = null;
+            //try
+            //{
+            //    group.addStud(stud6);
+            //}
+            //catch (Exception er)
+            //{
+            //    Console.WriteLine(er.Message + "\n");
+            //}
+
+            //if (stud1.Name == stud2.Name)
+            //{
+            //    Console.WriteLine("Имена студентов одинаковы!");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Имена студентов не одинаковы!");
+            //}
+
+            //if (group.getTitle() == group2.getTitle())
+            //{
+            //    Console.WriteLine("Имена групп одинаковы!");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Имена групп не одинаковы!");
+            //}
+
+
+            //Console.WriteLine("\nИндекс студента: ");
+            //try
+            //{
+            //    Console.WriteLine(group2[1]);
+            //}
+            //catch(Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
+            //List<Student> studs2 = new List<Student>
+            //{
+            //    new Student("Nikita", "Prigolovkin"),
+            //    new Student("Sasha", "Lopatov"),
+            //    new Student("Vasyan", "Vasyanich"),
+            //    new Student("Fedya", "Babaikin"),
+            //    new Student("Inokentii", "Popygaevich")
+            //};
+            //foreach (Student studLoc in studs2)
+            //{
+            //    for (int i = 0; i < studs2.Count; i++)
+            //    {
+            //        studLoc.setDZ(rand.Next(1, 12));
+            //    }
+            //}
+            //foreach (Student studloc in studs2)
+            //{
+            //    Console.WriteLine(studloc);
+            //    Console.WriteLine("DZ: " + studloc.sredDZ());
+            //}
+            //Console.WriteLine("\nПосле сортировки: \n");
+            //studs2.Sort();
+            //foreach (Student studloc in studs2)
+            //{
+            //    Console.WriteLine(studloc);
+            //    Console.WriteLine("DZ: " + studloc.sredDZ());
+            //}
+
+            //List<Student> studs3 = new List<Student>();
+            //    studs3.Add(new Student("Name1","Famil1"));
+            //    studs3.Add(new Student("Name2","Famil2"));
+            //    studs3.Add(new Student("Name3","Famil3"));
+            //    studs3.Add(new Student("Name4","Famil4"));
+            //Group gr = new Group(studs3);
+            //foreach (Student studs4 in studs3)
+            //{
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        studs4.setDZ(rand.Next(1, 12));
+            //    }
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        studs4.setDZ(rand.Next(1, 12));
+            //    }
+            //    for (int i = 0; i < 3; i++)
+            //    {
+            //        studs4.setDZ(rand.Next(1, 12));
+            //    }
+            //}
+            //foreach (Student studs4 in gr)
+            //{
+            //    Console.WriteLine(studs4);
+            //}
             Random rand = new Random();
-            Student stud1 = new Student();
-            Student stud2 = new Student("Nikita", "Prigolovkin");
-            Student stud3 = new Student("Nikita", "Prigolovkin", new DateTime(2005, 10, 28), new Address(), "12344321");
-
-            Aspirant aspir4 = new Aspirant("AspirantName1", "AspirantFamil1", "Cool Dissertation");
-
-            stud.Add(stud1);
-            stud.Add(stud2);
-            stud.Add(stud3);
-
-            for (int i = 0; i < 3; i++)
+            List<Student> namesStud = new List<Student>()
             {
-                stud1.setZachet(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud1.setDZ(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud1.setEkz(rand.Next(1, 12));
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                stud2.setZachet(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud2.setDZ(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud2.setEkz(rand.Next(1, 12));
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                stud3.setZachet(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud3.setDZ(rand.Next(1, 12));
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                stud3.setEkz(rand.Next(1, 12));
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                aspir4.setZachet(rand.Next(1, 12));
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                aspir4.setDZ(rand.Next(1, 12));
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                aspir4.setEkz(rand.Next(1, 12));
-            }
-
-            Group group = new Group("G1", "Povar", 2, stud);
-            group.sortStud();
-            group.addStud(aspir4);
-            group.sortStud();
-            Student izmenaStud = group.studById(1);
-            group.sortStud();
-            Console.WriteLine("\n");
-
-
-            Group group2 = new Group("G2", "Svarshik", 3);
-            group2.sortStud();
-
-            group.studIntoGroup(2, group2);
-            group.sortStud();
-            group2.sortStud();
-
-            group.studDelEkz();
-            group.sortStud();
-
-            group.badStud();
-            group.sortStud();
-
-            Student stud5 = new Student();
-            try
-            {
-                stud5 = new Student("Name2", "Famil2", new DateTime(2024, 99, 99), new Address(), "0508885556");
-            }
-            catch (Exception er)
-            {
-                Console.WriteLine(er.Message + "\n");
-            }
-
-
-            Student stud6 = null;
-            try
-            {
-                group.addStud(stud6);
-            }
-            catch (Exception er)
-            {
-                Console.WriteLine(er.Message + "\n");
-            }
-
-            if (stud1.Name == stud2.Name)
-            {
-                Console.WriteLine("Имена студентов одинаковы!");
-            }
-            else
-            {
-                Console.WriteLine("Имена студентов не одинаковы!");
-            }
-
-            if (group.getTitle() == group2.getTitle())
-            {
-                Console.WriteLine("Имена групп одинаковы!");
-            }
-            else
-            {
-                Console.WriteLine("Имена групп не одинаковы!");
-            }
-
-
-            Console.WriteLine("\nИндекс студента: ");
-            try
-            {
-                Console.WriteLine(group2[1]);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            List<Student> studs2 = new List<Student>
-            {
-                new Student("Nikita", "Prigolovkin"),
-                new Student("Sasha", "Lopatov"),
-                new Student("Vasyan", "Vasyanich"),
-                new Student("Fedya", "Babaikin"),
-                new Student("Inokentii", "Popygaevich")
+                new Student("Вениамин","Говнокодеров",new DateTime(2000,3,2),new Address()),
+                new Student("Абдул","Кэфтемефович",new DateTime(2001,5,22),new Address()),
+                new Student("Богдан","Богомданович",new DateTime(2005,12,1),new Address())
             };
-            foreach (Student studLoc in studs2)
+            Group gr5 = new Group(namesStud);
+             foreach (Student student in namesStud)
             {
-                for (int i = 0; i < studs2.Count; i++)
+                for (int i = 0; i < 1; i++) student.setDZ(rand.Next(1, 12));
+                for (int i = 0; i < 1; i++) student.setZachet(rand.Next(1, 12));
+                for (int i = 0; i < 1; i++) student.setEkz(rand.Next(1, 12));
+            }
+             foreach (Student studs in gr5)
+            {
+                Console.WriteLine(studs);
+                Console.WriteLine("\nСортировка по баллам:");
+                Sort.BubSort(gr5.Studs, StudComp.StudGrad);
+                foreach (Student students in gr5)
                 {
-                    studLoc.setDZ(rand.Next(1, 12));
+                    Console.WriteLine(students);
+                    Console.WriteLine(students.sredAll());
                 }
-            }
-            foreach (Student studloc in studs2)
-            {
-                Console.WriteLine(studloc);
-                Console.WriteLine("DZ: " + studloc.sredDZ());
-            }
-            Console.WriteLine("\nПосле сортировки: \n");
-            studs2.Sort();
-            foreach (Student studloc in studs2)
-            {
-                Console.WriteLine(studloc);
-                Console.WriteLine("DZ: " + studloc.sredDZ());
             }
 
-            List<Student> studs3 = new List<Student>();
-                studs3.Add(new Student("Name1","Famil1"));
-                studs3.Add(new Student("Name2","Famil2"));
-                studs3.Add(new Student("Name3","Famil3"));
-                studs3.Add(new Student("Name4","Famil4"));
-            Group gr = new Group(studs3);
-            foreach (Student studs4 in studs3)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    studs4.setDZ(rand.Next(1, 12));
-                }
-                for (int i = 0; i < 3; i++)
-                {
-                    studs4.setDZ(rand.Next(1, 12));
-                }
-                for (int i = 0; i < 3; i++)
-                {
-                    studs4.setDZ(rand.Next(1, 12));
-                }
-            }
-            foreach (Student studs4 in gr)
-            {
-                Console.WriteLine(studs4);
-            }
         }
     }
 }
